@@ -1,0 +1,13 @@
+just:='just --justfile "'+justfile()+'"'
+
+_default:
+  @{{just}} --list --unsorted
+
+
+# Surveille les changements des fichiers `.pikmap` et déclenche la conversion
+watch:
+    @watchexec --postpone -e pikmap -- '{{just}} pikmap_to_svg "$WATCHEXEC_WRITTEN_PATH"'
+
+# Convertit un fichier `.pikmap` en `.svg`
+pikmap_to_svg f:
+    pikmap-tool "{{f}}" > "{{replace(f, '.pikmap', '.svg')}}"
